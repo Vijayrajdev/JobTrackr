@@ -1,0 +1,150 @@
+body {
+  background-color: #f8fafc;
+  background-image:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(99, 102, 241, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(236, 72, 153, 0.15) 0%,
+      transparent 50%
+    );
+  background-attachment: fixed;
+}
+.dark body {
+  background-color: #0b0f19;
+  background-image:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(99, 102, 241, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(14, 165, 233, 0.1) 0%,
+      transparent 50%
+    );
+}
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+.dark .glass-panel {
+  background: rgba(17, 24, 39, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.3);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.6);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+.date-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.date-icon-btn {
+  position: absolute;
+  right: 8px;
+  color: #6366f1;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 10;
+}
+.timeline-line::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 15px;
+  width: 2px;
+  background: #e2e8f0;
+  z-index: 0;
+}
+.dark .timeline-line::before {
+  background: #334155;
+}
+#mainSidebar {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: width;
+}
+.sidebar-text {
+  transition:
+    opacity 0.2s ease,
+    width 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Collapsed State Styles */
+#mainSidebar.w-20 .sidebar-text {
+  opacity: 0;
+  width: 0;
+  pointer-events: none;
+}
+#mainSidebar.w-20 #brandContainer {
+  justify-content: center;
+}
+#mainSidebar.w-20 .nav-btn {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+#mainSidebar.w-20 .nav-btn:hover {
+  transform: none;
+}
+
+/* Nav Button Styling */
+.nav-btn {
+  transition: all 0.2s ease;
+  position: relative;
+  border-left: 3px solid transparent;
+}
+.nav-btn:hover {
+  background-color: rgba(99, 102, 241, 0.08);
+  color: #4f46e5;
+}
+.dark .nav-btn:hover {
+  background-color: rgba(99, 102, 241, 0.2);
+  color: #818cf8;
+}
+
+/* Active Nav Button */
+.nav-btn.active {
+  background-color: #eef2ff;
+  color: #4f46e5;
+  border-left-color: #4f46e5;
+}
+.dark .nav-btn.active {
+  background-color: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  border-left-color: #818cf8;
+}
