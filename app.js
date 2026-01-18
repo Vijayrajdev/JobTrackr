@@ -23,7 +23,11 @@ import {
   where,
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-const app = initializeApp(CONFIG.firebase);
+// In app.js
+const firebaseConfig = window.CONFIG.firebase;
+const appId = window.CONFIG.appId;
+const adminEmail = window.CONFIG.adminEmail;
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
@@ -402,7 +406,7 @@ window.app = {
       }
 
       await updateDoc(
-        doc(db, "job_applications", CONFIG.appId, "posts", currentJobId),
+        doc(db, "job_applications", appId, "posts", currentJobId),
         updateData,
       );
       window.app.closeDetailPanel();
@@ -439,7 +443,7 @@ window.app = {
   deleteCurrentJob: async () => {
     if (confirm("Delete permanently?")) {
       await deleteDoc(
-        doc(db, "job_applications", CONFIG.appId, "posts", currentJobId),
+        doc(db, "job_applications", appId, "posts", currentJobId),
       );
       window.app.closeDetailPanel();
       showToast("Deleted successfully");
@@ -449,7 +453,7 @@ window.app = {
   deleteJobFromList: async (id) => {
     // Stop event propagation is handled in onclick in HTML, but here logic is same
     if (confirm("Delete this application permanently?")) {
-      await deleteDoc(doc(db, "job_applications", CONFIG.appId, "posts", id));
+      await deleteDoc(doc(db, "job_applications", appId, "posts", id));
       showToast("Deleted successfully");
     }
   },
@@ -467,22 +471,19 @@ window.app = {
         if (cols && cols.length >= 2) {
           // Strip quotes
           const clean = cols.map((col) => col.replace(/^"|"$/g, "").trim());
-          await addDoc(
-            collection(db, "job_applications", CONFIG.appId, "posts"),
-            {
-              company: clean[0],
-              position: clean[1],
-              status: clean[2] || "Applied",
-              salary: clean[3] || "-",
-              date: new Date().toISOString(),
-              platform: clean[5] || "Import",
-              jobLink: clean[6] || "",
-              notes: clean[7] || "",
-              ownerId: currentUser.uid,
-              ownerEmail: currentUser.email,
-              createdAt: serverTimestamp(),
-            },
-          );
+          await addDoc(collection(db, "job_applications", appId, "posts"), {
+            company: clean[0],
+            position: clean[1],
+            status: clean[2] || "Applied",
+            salary: clean[3] || "-",
+            date: new Date().toISOString(),
+            platform: clean[5] || "Import",
+            jobLink: clean[6] || "",
+            notes: clean[7] || "",
+            ownerId: currentUser.uid,
+            ownerEmail: currentUser.email,
+            createdAt: serverTimestamp(),
+          });
           c++;
         }
       }
@@ -687,7 +688,7 @@ window.app.dismissReminder = async (jobId, text) => {
 
   try {
     await updateDoc(
-      doc(db, "job_applications", CONFIG.appId, "posts", jobId),
+      doc(db, "job_applications", appId, "posts", jobId),
       updateData,
     );
     showToast("Reminder dismissed");
@@ -699,7 +700,7 @@ window.app.dismissReminder = async (jobId, text) => {
 onAuthStateChanged(auth, (user) => {
   if (user) {
     currentUser = user;
-    isAdmin = user.email === CONFIG.adminEmail;
+    isAdmin = user.email === adminEmail;
     document.getElementById("loginScreen").classList.add("hidden");
 
     document.getElementById("userNameDisplay").innerText =
@@ -716,7 +717,7 @@ onAuthStateChanged(auth, (user) => {
       document.getElementById("userAvatar").innerHTML =
         `<img src="${user.photoURL}" class="w-full h-full rounded-full">`;
 
-    const q = collection(db, "job_applications", CONFIG.appId, "posts");
+    const q = collection(db, "job_applications", appId, "posts");
     onSnapshot(q, (snapshot) => {
       jobsData = [];
       snapshot.forEach((d) => {
@@ -764,7 +765,7 @@ document.getElementById("jobForm").addEventListener("submit", async (e) => {
   }
 
   try {
-    await addDoc(collection(db, "job_applications", CONFIG.appId, "posts"), {
+    await addDoc(collection(db, "job_applications", appId, "posts"), {
       company: document.getElementById("company").value,
       position: document.getElementById("position").value,
       status: document.getElementById("status").value,
